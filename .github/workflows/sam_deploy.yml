@@ -38,10 +38,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1 
 
-      # build
+      # endre mål-mappe og build
       - name: Build SAM Application
         run: |
-          sam build
+         cd sam_lambda/sam-app
+         sam build
+          
 
       # deploy
       - name: Deploy SAM Application
