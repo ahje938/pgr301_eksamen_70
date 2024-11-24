@@ -1,0 +1,49 @@
+name: Deploy SAM Application
+
+on:
+  push:
+    branches:
+      - main # Trigges kun ved push til main-branchen
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Sjekk ut koden fra GitHub-repositoryet
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Sett opp Python for SAM CLI
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # Installer AWS SAM CLI
+      - name: Install AWS SAM CLI
+        run: |
+          pip install aws-sam-cli
+
+      # Installer avhengigheter (hvis noen)
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # Konfigurer AWS Credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1 # Bytt til regionen for ressursene dine
+
+      # Bygg SAM-applikasjonen
+      - name: Build SAM Application
+        run: |
+          sam build
+
+      # Deploy SAM-applikasjonen
+      - name: Deploy SAM Application
+        run: |
+          sam deploy --no-confirm-changeset --capabilities CAPABILITY_IAM --stack-name sam-app --region eu-west-1
