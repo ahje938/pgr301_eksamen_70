@@ -43,4 +43,5 @@ jobs:
       # deploy
       - name: Deploy SAM Application
         run: |
+          cd sam_lambda/sam-app 
           sam deploy --no-confirm-changeset --capabilities CAPABILITY_IAM --stack-name sam-app --region eu-west-1
