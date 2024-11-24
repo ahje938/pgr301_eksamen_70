@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-app
+
+Globals:
+  Function:
+    Timeout: 40
+    MemorySize: 256
+    Tracing: Active
+    LoggingConfig:
+      LogFormat: JSON
+  Api:
+    TracingEnabled: true
+
+Resources:
+  GenerateImageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamLambda/            
+      Handler: app.lambda_handler   
+      Runtime: python3.9
+      Architectures:
+      - x86_64
+      Environment:
+        Variables:
+          BUCKET_NAME: "pgr301-couch-explorers"
+      Policies:
+        - S3CrudPolicy:
+            BucketName: "pgr301-couch-explorers"
+        - Statement:
+            Effect: Allow
+            Action: "bedrock:InvokeModel"
+            Resource: "*"
+      Events:
+        GenerateImage:
+          Type: Api
+          Properties:
+            Path: /generate
+            Method: post
+
+Outputs:
+  GenerateImageApi:
+    Description: API Gateway endpoint URL for Generate Image function
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/generate/"
+  GenerateImageFunctionArn:
+    Description: Generate Image Lambda Function ARN
+    Value: !GetAtt GenerateImageFunction.Arn
+  GenerateImageFunctionIamRole:
+    Description: Implicit IAM Role created for Generate Image function
+    Value: !GetAtt GenerateImageFunctionRole.Arn
