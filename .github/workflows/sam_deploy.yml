@@ -13,6 +13,11 @@ jobs:
       # checkout
       - name: Checkout Code
         uses: actions/checkout@v3
+      
+      
+      # endre mappe
+      - name: Change directory to application folder
+        working-directory: sam_lambda/sam-app
 
       # python 
       - name: Setup Python
