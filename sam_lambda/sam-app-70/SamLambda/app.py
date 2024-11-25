@@ -52,5 +52,5 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps("Handling utført")
+        'body': json.dumps("Bildet er generert og lastet opp til bucket")
     }
