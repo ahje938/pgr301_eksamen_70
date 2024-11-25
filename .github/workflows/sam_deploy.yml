@@ -36,12 +36,12 @@ jobs:
       # endre mål-mappe og build
       - name: Build SAM Application
         run: |
-         cd sam_lambda/sam-app_70
+         cd sam_lambda/sam-app-70
          sam build
           
 
       # deploy
       - name: Deploy SAM Application
         run: |
-          cd sam_lambda/sam-app_70
-          sam deploy --no-confirm-changeset --capabilities CAPABILITY_IAM --stack-name sam-app_70 --region eu-west-1
+          cd sam_lambda/sam-app-70
+          sam deploy --no-confirm-changeset --capabilities CAPABILITY_IAM --stack-name sam-app-70 --region eu-west-1
