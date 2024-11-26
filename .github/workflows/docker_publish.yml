@@ -14,6 +14,12 @@ jobs:
     # checkout
     - name: Check out code
       uses: actions/checkout@v3
+      
+      
+       # henter commit melding for image-tagging
+    - name: Extract commit message
+      id: commit_message
+      run: echo "COMMIT_MSG=$(git log -1 --pretty=format:%s | sed 's/ /-/g' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
 
     - name: Log in to Docker Hub
@@ -30,11 +36,11 @@ jobs:
       run: |
         cd PGR301_70/java_sqs_client
         docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/java-sqs-client:latest .
-        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/java-sqs-client:${{ github.sha }} .
+        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/java-sqs-client:${{ env.COMMIT_MSG }} .
 
     # Push image til Docker Hub
     - name: Push Docker Image
       run: |
         cd PGR301_70/java_sqs_client
         docker push ${{ secrets.DOCKER_HUB_USERNAME }}/java-sqs-client:latest
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/java-sqs-client:${{ github.sha }}
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/java-sqs-client:${{ env.COMMIT_MSG }}
