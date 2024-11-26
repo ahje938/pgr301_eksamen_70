@@ -28,11 +28,13 @@ jobs:
     # Bygg og tag image
     - name: Build Docker Image
       run: |
+        cd PGR301_70/java_sqs_client
         docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/java-sqs-client:latest .
         docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/java-sqs-client:${{ github.sha }} .
 
     # Push image til Docker Hub
     - name: Push Docker Image
       run: |
+        cd PGR301_70/java_sqs_client
         docker push ${{ secrets.DOCKER_HUB_USERNAME }}/java-sqs-client:latest
         docker push ${{ secrets.DOCKER_HUB_USERNAME }}/java-sqs-client:${{ github.sha }}
