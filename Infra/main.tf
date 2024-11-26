@@ -74,6 +74,11 @@ resource "aws_iam_policy" "lambda_sqs_policy_eksamen70" {
         Effect = "Allow"
         Action = "bedrock:InvokeModel"
         Resource = "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-image-generator-v1"
+      },
+      {
+        Effect = "Allow"
+        Action = "kms:Decrypt"
+        Resource = "*"
       }
     ]
   })
@@ -84,6 +89,7 @@ resource "aws_iam_role_policy_attachment" "attach_policy_eksamen70" {
   role       = aws_iam_role.lambda_role_eksamen70.name
   policy_arn = aws_iam_policy.lambda_sqs_policy_eksamen70.arn
 }
+
 
 # lambda funksjonen
 resource "aws_lambda_function" "lambda_sqs_processor_eksamen70" {
@@ -99,7 +105,7 @@ resource "aws_lambda_function" "lambda_sqs_processor_eksamen70" {
   environment {
     variables = {
       BUCKET_NAME   = "pgr301-couch-explorers"
-      SQS_QUEUE_URL = aws_sqs_queue.image_processing_queue_70.id
+      SQS_QUEUE_URL = aws_sqs_queue.image_processing_queue_70.url
     }
   }
 
