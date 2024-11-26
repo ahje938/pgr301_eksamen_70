@@ -128,3 +128,5 @@ resource "aws_lambda_event_source_mapping" "sqs_to_lambda_eksamen70" {
   batch_size       = 10
   enabled          = true
 }
+
+##ss

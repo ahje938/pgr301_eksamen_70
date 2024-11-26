@@ -12,7 +12,7 @@ Globals:
       LogFormat: JSON
   Api:
     TracingEnabled: true
-    EndpointConfiguration: REGIONAL  # Bruk REGIONAL for API Gateway
+    EndpointConfiguration: REGIONAL  
 
 Resources:
   GenerateImageFunction:
@@ -38,7 +38,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId:
-              Ref: GenerateImageApi  # Kobler eksplisitt til API Gateway
+              Ref: GenerateImageApi  
             Path: /generate
             Method: post
 
@@ -46,7 +46,7 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: Prod
-      EndpointConfiguration: REGIONAL  # Eksplisitt REGIONAL
+      EndpointConfiguration: REGIONAL  
 
 Outputs:
   GenerateImageApi:
