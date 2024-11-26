@@ -93,7 +93,6 @@ resource "aws_iam_policy" "lambda_sqs_policy_eksamen70" {
   })
 }
 
-
 # Attach Policy to Role
 resource "aws_iam_role_policy_attachment" "attach_policy_eksamen70" {
   role       = aws_iam_role.lambda_role_eksamen70.name
@@ -129,4 +128,38 @@ resource "aws_lambda_event_source_mapping" "sqs_to_lambda_eksamen70" {
   enabled          = true
 }
 
-##ss
+# Variabel for e-postadresse
+variable "email" {
+  description = "E-postadresse som mottar varsler når alarmen utløses"
+  type        = string
+}
+
+
+resource "aws_sns_topic" "sqs_delay_alarm_topic" {
+  name = "sqs-delay-alarm-topic"
+}
+
+# SNS Subscription for e-post
+resource "aws_sns_topic_subscription" "sqs_delay_alarm_subscription" {
+  topic_arn = aws_sns_topic.sqs_delay_alarm_topic.arn
+  protocol  = "email"
+  endpoint  = var.notification_email
+}
+
+
+resource "aws_cloudwatch_metric_alarm" "sqs_age_of_oldest_message_alarm" {
+  alarm_name                = "SQS-Age-Of-Oldest-Message-Alarm"
+  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  evaluation_periods        = 1
+  metric_name               = "ApproximateAgeOfOldestMessage"
+  namespace                 = "AWS/SQS"
+  period                    = 60
+  statistic                 = "Maximum"
+  threshold                 = 300 
+  alarm_description         = "Alarm hvis den eldste meldingen i køen er mer enn 5 minutter gammel."
+  dimensions = {
+    QueueName = aws_sqs_queue.image_processing_queue_70.name
+  }
+
+  alarm_actions = [aws_sns_topic.sqs_delay_alarm_topic.arn]
+}
