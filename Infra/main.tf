@@ -130,7 +130,7 @@ resource "aws_lambda_event_source_mapping" "sqs_to_lambda_eksamen70" {
 
 # Variabel for e-postadresse
 variable "email" {
-  description = "E-postadresse som mottar varsler når alarmen utløses"
+  description = "email som mottar varsel"
   type        = string
 }
 
@@ -156,7 +156,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_age_of_oldest_message_alarm" {
   period                    = 60
   statistic                 = "Maximum"
   threshold                 = 300 
-  alarm_description         = "Alarm hvis den eldste meldingen i køen er mer enn 5 minutter gammel."
+  alarm_description         = "alarm hvis 300s overgås"
   dimensions = {
     QueueName = aws_sqs_queue.image_processing_queue_70.name
   }

@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - '**' # For andre branches enn main
+      - '**' #andre branches enn main
 
 jobs:
   terraform:
@@ -12,11 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Sjekk ut koden fra repositoryet
+      # checkout
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Sett opp AWS-legitimasjon fra GitHub Secrets
+      # aws legitimasjon
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -24,7 +24,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
-      # Installer Terraform
+      # terraform-installasjon
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -36,14 +36,14 @@ jobs:
          cd Infra
          terraform init
 
-      # Kjør Terraform Plan for alle branches
+      # kjører plan for alle branches
       - name: Terraform Plan
         if: github.ref != 'refs/heads/main' # Kun for ikke-main branches
         run: |
          cd Infra
          terraform plan
 
-      # Kjør Terraform Apply for main branch
+      # kjører apply for main
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' 
         run: |
