@@ -1,6 +1,6 @@
 Oppgave 1
 - api endpoint
-  https://f3c3g704a4.execute-api.eu-west-1.amazonaws.com/Prod/generate 	
+  https://3lwk35n782.execute-api.eu-west-1.amazonaws.com/Prod/generate
 
 - sam_deploy github actions
   https://github.com/ahje938/pgr301_eksamen_70/actions/runs/12001609648/job/33452357691
