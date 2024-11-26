@@ -58,4 +58,4 @@ Outputs:
   GenerateImageFunctionIamRole:
     Description: Implicit IAM Role created for Generate Image function
     Value: !GetAtt GenerateImageFunctionRole.Arn
-##
+#####
