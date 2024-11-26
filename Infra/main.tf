@@ -143,7 +143,7 @@ resource "aws_sns_topic" "sqs_delay_alarm_topic" {
 resource "aws_sns_topic_subscription" "sqs_delay_alarm_subscription" {
   topic_arn = aws_sns_topic.sqs_delay_alarm_topic.arn
   protocol  = "email"
-  endpoint  = var.notification_email
+  endpoint  = var.email
 }
 
 
